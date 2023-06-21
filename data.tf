@@ -18,3 +18,6 @@ data "aws_ami" "ami" {
 
 ##Option-2
 ## Using base64 fucntion adn passing variable values within template. check main.tf of user_data block
+
+
+data "aws_caller_identity" "account" {}
