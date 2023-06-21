@@ -26,7 +26,7 @@ resource "aws_launch_template" "main" {
 
   ## OPTION-A : in this step, userdata.sh file being called to execute in part of launching instance using template
   # component and env variables values passed using data.tf file.
-  
+
   /* user_data = filebase64("${path.module}/userdata.sh") */
 
   # OPITON - B other approch is
@@ -50,7 +50,7 @@ resource "aws_autoscaling_group" "main" {
     version = "$Latest"
   }
 
-  tags {
+  tag {
     key = "Name"
     propagate_at_launch = false
     value = "${var.component}-${var.env}"
