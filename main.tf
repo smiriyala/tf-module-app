@@ -25,8 +25,9 @@ resource "aws_launch_template" "main" {
   }
 
   ## OPTION-A : in this step, userdata.sh file being called to execute in part of launching instance using template
-  # component and env variables values passed using data.tf file. 
-  user_data = filebase64("${path.module}/userdata.sh")
+  # component and env variables values passed using data.tf file.
+  
+  /* user_data = filebase64("${path.module}/userdata.sh") */
 
   # OPITON - B other approch is
   user_data = base64encode(templatefile("${path.module}/userdata.sh", {
