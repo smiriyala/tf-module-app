@@ -114,7 +114,7 @@ resource "aws_lb_target_group" "main" {
     enabled = true
     healthy_threshold = 2
     unhealthy_threshold = 5
-    interval = 4
+    interval = 5
     timeout = 4
   }
   tags = merge(
