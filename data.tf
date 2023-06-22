@@ -24,5 +24,5 @@ data "aws_caller_identity" "account" {}
 
 ##STEp-4
 data "aws_route53_zone" "domain"{
-    value = var.dns_domain
+    name = var.dns_domain
 }
