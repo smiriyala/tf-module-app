@@ -125,8 +125,8 @@ resource "aws_lb_target_group" "main" {
 
 #Session-46 - LoadBalancer
 #STEP 5- Crate CNAME record - DONE
-resource "aws_route53_record" "www" {
-  zone_id = data.aws_route53_zone.domain.id.zone_id
+resource "aws_route53_record" "main" {
+  zone_id = data.aws_route53_zone.domain.zone_id
   name    = local.dns_name
   type    = "CNAME"
   ttl     = "30"
