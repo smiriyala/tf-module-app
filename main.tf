@@ -47,6 +47,10 @@ resource "aws_autoscaling_group" "main" {
   min_size           = var.min_size
   vpc_zone_identifier = var.subnets
 
+  #Session-46 - LoadBalancer
+  #step-4 - Attach Target Group to ALB  - DONE
+  target_group_arns = [aws_lb_target_group.main.arn]
+
   launch_template {
     id      = aws_launch_template.main.id
     version = "$Latest"
@@ -96,4 +100,55 @@ resource "aws_security_group" "main" {
     var.tags,
     { Name = "${var.component}-${var.env}" }
   )
+}
+
+#Session-46 - LoadBalancer
+#STEP 3 - Crate Target Group
+# This target group need to attached to AUTOSCALING_GROUP
+resource "aws_lb_target_group" "main" {
+  name     = "${var.component}-${var.env}-tg"
+  port     = var.port
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+  health_check {
+    enabled = true
+    healthy_threshold = 2
+    unhealthy_threshold = 5
+    interval = 4
+    timeout = 4
+  }
+  tags = merge(
+    var.tags,
+    { Name = "${var.component}-${var.env}" }
+  )
+}
+
+#Session-46 - LoadBalancer
+#STEP 5- Crate CNAME record - DONE
+resource "aws_route53_record" "www" {
+  zone_id = data.aws_route53_zone.domain.id.zone_id
+  name    = local.dns_name
+  type    = "CNAME"
+  ttl     = "30"
+
+  #This record is comming from ALB
+  records = [var.alb_dns_name]
+}
+
+#Session-46 - LoadBalancer
+#STEP 6- Add rule in listener
+resource "aws_lb_listener_rule" "listener_rule" {
+  listener_arn = var.listener_arn
+  priority     = var.listener_priority
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.static.arn
+  }
+
+  condition {
+    host_header {
+      values = [local.dns_name]
+    }
+  }
 }
