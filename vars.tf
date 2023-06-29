@@ -17,3 +17,5 @@ variable "dns_domain" {}
 variable "alb_dns_name" {}
 variable "listener_arn" {}
 variable "listener_priority" {}
+
+variable "parameters" {}
