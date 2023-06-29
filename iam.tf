@@ -18,14 +18,14 @@ resource "aws_iam_policy" "main" {
                 "ssm:GetParameter"
             ],
             /* "Resource": [
-                "arn:aws:ssm:us-test-1:${data.aws_caller_identity.account.account_id}:parameter/${var.env}.${var.component}*",
-                "arn:aws:ssm:us-test-1:${data.aws_caller_identity.account.account_id}:parameter/${var.env}.docdb.*",
-                "arn:aws:ssm:us-test-1:${data.aws_caller_identity.account.account_id}:parameter/${var.env}.elasticache.*"
+                "arn:aws:ssm:us-east-1:${data.aws_caller_identity.account.account_id}:parameter/${var.env}.${var.component}*",
+                "arn:aws:ssm:us-east-1:${data.aws_caller_identity.account.account_id}:parameter/${var.env}.docdb.*",
+                "arn:aws:ssm:us-eat-1:${data.aws_caller_identity.account.account_id}:parameter/${var.env}.elasticache.*"
                 # @here - docdb access elasticache params nad vice versa, We need to limit access permission
                 # as they are unwanted for other components. This will cover in Session-48
             ] */
             "Resource": [
-              for k in local.parameters : "arn:aws:ssm:us-test-1:${data.aws_caller_identity.account.account_id}:parameter/${var.env}.${k}.*"
+              for k in local.parameters : "arn:aws:ssm:us-east-1:${data.aws_caller_identity.account.account_id}:parameter/${var.env}.${k}.*"
 
             ]
         },
