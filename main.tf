@@ -88,6 +88,15 @@ resource "aws_security_group" "main" {
     cidr_blocks      = var.allow_app_to
   }
 
+  #this port opening node_exporter default port to Prometheus Server which is monitoring_nodes variable
+  ingress {
+    description      = "PROMETHEUS"
+    from_port        = 9100
+    to_port          = 9100
+    protocol         = "tcp"
+    cidr_blocks      = var.monitoring_nodes
+  }
+
   egress {
     from_port        = 0
     to_port          = 0
@@ -105,6 +114,7 @@ resource "aws_security_group" "main" {
 #Session-46 - LoadBalancer
 #STEP 3 - Crate Target Group
 # This target group need to attached to AUTOSCALING_GROUP
+# /health path need to give to record health
 resource "aws_lb_target_group" "main" {
   name     = "${var.component}-${var.env}-tg"
   port     = var.port
@@ -116,6 +126,7 @@ resource "aws_lb_target_group" "main" {
     unhealthy_threshold = 5
     interval = 5
     timeout = 4
+    path = "/health"
   }
   tags = merge(
     var.tags,

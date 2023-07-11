@@ -19,3 +19,5 @@ variable "listener_arn" {}
 variable "listener_priority" {}
 
 variable "parameters" {}
+
+variable "monitoring_nodes" {}
