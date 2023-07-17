@@ -63,6 +63,24 @@ resource "aws_autoscaling_group" "main" {
   }
 }
 
+##Now as part of PROD changes, we need to add autoscalling policities: There are 3 types of policies
+# 1 - Dynamic Scalling Policy - We are using this one here.
+# 2 - Predictive Scalling Policy
+# 3 - Scheduled Actions
+resource "aws_autoscaling_policy" "asg-cpu-rule" {
+  name                   = "CPULoadDetect"
+  autoscaling_group_name = aws_autoscaling_group.main.name
+  policy_type = "TargetTrackingScaling"
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+
+    target_value = 40.0
+  }
+}
+
+
 
 ##lets create security group as none of the machines are connectable. 
 resource "aws_security_group" "main" {
